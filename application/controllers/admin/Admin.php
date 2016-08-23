@@ -93,11 +93,13 @@ Class Admin extends MY_Controller
         $this->load->library('form_validation');
         $this->load->helper('form');
 
-        $id = $this->uri->segment(3);
+        $id = $this->uri->rsegment('3');
         $id = intval($info);
 
         //lay thong tin thanh vien
         $info = $this->admin_model->get_info($id);
+        $this->data['info'] = $info;
+
         if (!$info) {
              $this->session->set_flashdata('message','khong co tai khoan'); 
              redirect(admin_url('admin'));
