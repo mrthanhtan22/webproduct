@@ -19,7 +19,7 @@ Class Admin extends MY_Controller
         $total = $this->admin_model->get_total();
         $this->data['total'] = $total;
 
-        $this->session->flashdata('message');
+        $message =  $this->session->flashdata('message');
         $this->data['message'] = $message;
         
         $this->data['temp'] = 'admin/admin/index';
@@ -93,13 +93,21 @@ Class Admin extends MY_Controller
         $this->load->library('form_validation');
         $this->load->helper('form');
 
+<<<<<<< HEAD
         $id = $this->uri->rsegment('3');
         $id = intval($info);
+=======
+        $id = $this->uri->segment('4');
+        $id = intval($id);
+>>>>>>> f4ae02a53e8ef3f526fe33b0efb18497a244e297
 
         //lay thong tin thanh vien
         $info = $this->admin_model->get_info($id);
         $this->data['info'] = $info;
+<<<<<<< HEAD
 
+=======
+>>>>>>> f4ae02a53e8ef3f526fe33b0efb18497a244e297
         if (!$info) {
              $this->session->set_flashdata('message','khong co tai khoan'); 
              redirect(admin_url('admin'));
@@ -109,6 +117,7 @@ Class Admin extends MY_Controller
         {
             $this->form_validation->set_rules('name', 'Tên', 'required|min_length[8]');
             $this->form_validation->set_rules('username', 'Tài khoản đăng nhập', 'required|callback_check_username');
+            $password = $this->input->post('password');
             if ($password) {
                 $this->form_validation->set_rules('password', 'Mật khẩu', 'required|min_length[6]');
                 $this->form_validation->set_rules('re_password', 'Nhập lại mật khẩu', 'matches[password]');
@@ -118,28 +127,52 @@ Class Admin extends MY_Controller
             if ($this->form_validation->run()) {
                 $name     = $this->input->post('name');
                 $username = $this->input->post('username');
-                $password = $this->input->post('password');
+                
 
                 $data = array(
                     'name'     => $name,
                     'username' => $username,
-                    if ($password) {
-                       'password' => md5($password)
-                    });
+                    );
+                if ($password) {
+                       $data['password'] = md5($password) ;
+                    }
 
-            }
-            if($this->admin_model->upload($data, $id)){
+            
+            if($this->admin_model->update($id,$data)){
                 $this->session->set_flashdata('message','Sua doi dữ liệu thành công'); 
             } else{
                  $this->session->set_flashdata('message','Sua doi dữ liệu that bai'); 
             }
+            redirect(admin_url('admin'));
         }
-        $this->data['temp'] = 'admin/admin/upload';
+        }
+
+        $this->data['temp'] = 'admin/admin/edit';
         $this->load->view('admin/main', $this->data);
-}
-    function delete(){
-        echo "456";
+
     }
+    function delete(){
+       $id = $this->uri->segment('4');
+       $id = intval($id);
+
+       $info = $this->admin_model->get_info($id);
+       $this->data['info'] = $info;
+       if (!$info) {
+           $this->session->set_flashdata('message','khong co tai khoan'); 
+             redirect(admin_url('admin'));
+       }
+       $this->admin_model->delete($id);
+       $this->session->set_flashdata('message','Xoa thanh cong');
+       redirect(admin_url('admin'));
+    }
+    function logout(){
+        if ($this->session->userdata('login')) 
+        {
+            $this->session->unset_userdata('login');
+        }
+        redirect(admin_url('login'));
+    }
+    
 }
 
 

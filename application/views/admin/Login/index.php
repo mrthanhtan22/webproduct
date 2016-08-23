@@ -14,6 +14,7 @@
 	        
 	        <form class="form" id="form" action="" method="post">
 	           <fieldset>
+
 	                <div class="formRow">
 	                    <label for="param_username">Tên đăng nhập:</label>
 	                    <div class="loginInput"><input type="text" name="username" id="param_username" /></div>
@@ -27,6 +28,7 @@
 	                </div>
 	                
 	                <div class="loginControl">
+	                	<?php echo form_error('login') ?>
 	                    <input type='hidden' name="submit" value='1'/>
 	                    <input type="submit"  value="Đăng nhập" class="dredB logMeIn" />
 	                    <div class="clear"></div>

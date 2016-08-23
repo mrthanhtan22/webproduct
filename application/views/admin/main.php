@@ -7,7 +7,9 @@
 		<?php $this->load->view('admin/left'); ?>
 	</div>
 	<div id="rightSide">
+		
 		<?php $this->load->view('admin/header'); ?>
+		
 		<!--conment-->
 		<?php $this->load->view($temp, $this->data); ?>
 		<!-- end comment-->

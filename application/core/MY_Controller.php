@@ -9,17 +9,29 @@
 			$controller = $this->uri->segment(1);
 			switch ($controller) {
 				case 'admin':
+				{
 					$this->load->helper('admin');
 					$this->_check_login();
 					break;
-				
+				}
 				default:
-					# code...
-					break;
+					{
+
+					}
 			}
 		}
 		private function _check_login(){
+			$controller = $this->uri->rsegment('1');
+			$controller = strtolower($controller);
 
+			$login= $this->session->userdata('login');
+			/*chua dang nhap va khac login*/
+			if (!$login && $controller != 'login') {
+				redirect(admin_url('login'));
+			} 
+			if ($login && $controller == 'login') {
+				redirect(admin_url('home'));
+			}
 		}
 	}
  ?>
